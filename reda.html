@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -299,7 +298,7 @@
 
 <div id="helpPanel">
   <b>How to edit this card</b><br><br>
-  1. Click <b>Edit details</b> top right, then click directly on the name, title, department, phone, email, website or address to change them. Click <b>Done editing</b> to lock it again.<br><br>
+  1. Click <b>Edit details</b> top right, then click directly on the name, title, department, phone, email, website or address to change them. Click <b>Done editing</b> to lock it again. On the hosted (live) link, the edit bar only shows if you add <code>?edit=1</code> to the end of the URL — e.g. <code>yoursite.com/reda.html?edit=1</code>. Bookmark that version for yourself; share the plain link (no <code>?edit=1</code>) with everyone else.<br><br>
   2. Your changes only live in this open page — to keep them, use your browser's <b>Save Page As → Webpage, HTML only</b> (or Ctrl/Cmd+S) after editing, and re-open that saved file next time.<br><br>
   3. To give every employee their own card: duplicate this HTML file, open it, edit their details, save. Host all the files for free on <b>GitHub Pages</b>, <b>Netlify</b>, or <b>Google Sites</b>, or just send the .html file directly — it works by double-clicking, no internet needed.<br><br>
   4. <b>Save contact</b> downloads a .vcf so anyone can add the person straight to their phone contacts. <b>QR code</b> points to this card's web link — once you've hosted the file (step 3), paste that link into the box under the QR so scanning it opens the actual card, then <b>Download QR (PNG)</b> to print or share it.
@@ -308,6 +307,14 @@
 <script>
 const fields = ['f-name','f-title','f-dept','f-phone','f-whatsapp','f-email','f-web','f-address'];
 let editing = false;
+
+// Only show edit controls when this page is opened with ?edit=1 —
+// keeps the public/QR link clean for visitors while still letting
+// you edit by using a private link with that added.
+const isEditLink = new URLSearchParams(window.location.search).get('edit') === '1';
+if(!isEditLink){
+  document.getElementById('editBar').style.display = 'none';
+}
 
 document.getElementById('toggleEdit').addEventListener('click', () => {
   editing = !editing;
@@ -471,17 +478,40 @@ document.getElementById('qrUrl').addEventListener('input', () => {
 
 document.getElementById('downloadQR').addEventListener('click', (e) => {
   e.preventDefault();
-  const img = document.querySelector('#qrcode img');
   const canvas = document.querySelector('#qrcode canvas');
-  const dataUrl = img ? img.src : (canvas ? canvas.toDataURL('image/png') : null);
-  if(!dataUrl) return;
+  const img = document.querySelector('#qrcode img');
+  let dataUrl = null;
+  try{
+    if(canvas){
+      dataUrl = canvas.toDataURL('image/png');
+    } else if(img && img.src){
+      dataUrl = img.src;
+    }
+  }catch(err){
+    dataUrl = (img && img.src) ? img.src : null;
+  }
+
+  if(!dataUrl){
+    alert('QR code is still loading — click "QR code" again, wait a second, then try downloading.');
+    return;
+  }
+
+  const name = (document.getElementById('f-name').textContent.trim() || 'ratomag_card').replace(/\s+/g,'_');
+
+  // Try a direct download first
   const a = document.createElement('a');
   a.href = dataUrl;
-  const name = document.getElementById('f-name').textContent.trim().replace(/\s+/g,'_') || 'ratomag_card';
   a.download = name + '_qr.png';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+
+  // Mobile browsers often ignore the download attribute and just
+  // navigate — open it in a new tab too so there's always a way to
+  // long-press / tap-and-hold to save the image.
+  setTimeout(() => {
+    window.open(dataUrl, '_blank');
+  }, 300);
 });
 
 document.getElementById('toggleHelp').addEventListener('click', () => {
