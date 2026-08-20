@@ -30,7 +30,6 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content:center;
     min-height:100vh;
     padding: 32px 16px 60px;
   }
@@ -266,13 +265,52 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
       </span>
       <span>
-        <span class="label">Address</span>
-        <span class="val" id="f-address">Ratomag Factory, Egypt</span>
+        <span class="label" id="f-address-label">Address</span>
+        <span class="val" id="f-address">Ratomag factory, Egypt</span>
       </span>
     </a>
     <div class="mapLinkWrap" id="mapLinkWrap">
       <label for="f-maplink">Google Maps link this points to</label>
       <input type="text" id="f-maplink" placeholder="Paste the exact Google Maps link, e.g. https://maps.app.goo.gl/xxxx" value="https://maps.app.goo.gl/nVnHfVUpxhLubXnS7">
+    </div>
+    <a class="row" id="row-address2" href="https://maps.app.goo.gl/wYztCR3mXC2QYLyWA" target="_blank" rel="noopener">
+      <span class="ic">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+      </span>
+      <span>
+        <span class="label" id="f-address2-label">Address 2</span>
+        <span class="val" id="f-address2">Head Office, Cairo, Egypt</span>
+      </span>
+    </a>
+    <div class="mapLinkWrap" id="mapLinkWrap2">
+      <label for="f-maplink2">Google Maps link this points to</label>
+      <input type="text" id="f-maplink2" placeholder="Paste the exact Google Maps link, e.g. https://maps.app.goo.gl/xxxx" value="https://maps.app.goo.gl/wYztCR3mXC2QYLyWA">
+    </div>
+    <a class="row" id="row-instagram" href="https://www.instagram.com/ratomaggroup?igsh=cGV4OXRlZHp4dXJv" target="_blank" rel="noopener">
+      <span class="ic">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </span>
+      <span>
+        <span class="label">Instagram</span>
+        <span class="val" id="f-instagram">@ratomaggroup</span>
+      </span>
+    </a>
+    <div class="mapLinkWrap" id="igLinkWrap">
+      <label for="f-iglink">Instagram profile link</label>
+      <input type="text" id="f-iglink" placeholder="https://instagram.com/ratomag" value="https://www.instagram.com/ratomaggroup?igsh=cGV4OXRlZHp4dXJv">
+    </div>
+    <a class="row" id="row-linkedin" href="https://www.linkedin.com/company/ratomaggroup/" target="_blank" rel="noopener">
+      <span class="ic">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"></path></svg>
+      </span>
+      <span>
+        <span class="label">LinkedIn</span>
+        <span class="val" id="f-linkedin">Ratomag Group</span>
+      </span>
+    </a>
+    <div class="mapLinkWrap" id="liLinkWrap">
+      <label for="f-lilink">LinkedIn profile link</label>
+      <input type="text" id="f-lilink" placeholder="https://linkedin.com/company/ratomag" value="https://www.linkedin.com/company/ratomaggroup/">
     </div>
   </div>
 
@@ -307,7 +345,7 @@
 </div>
 
 <script>
-const fields = ['f-name','f-title','f-dept','f-phone','f-whatsapp','f-email','f-web','f-address'];
+const fields = ['f-name','f-title','f-dept','f-phone','f-whatsapp','f-email','f-web','f-address-label','f-address','f-address2-label','f-address2','f-instagram','f-linkedin'];
 let editing = false;
 
 // Only show edit controls when this page is opened with ?edit=1 —
@@ -331,7 +369,7 @@ document.getElementById('toggleEdit').addEventListener('click', () => {
 
 // while editing, clicking a contact row should let you type instead of
 // navigating away — but tapping the small icon still opens the link
-const rowIds = ['row-phone','row-whatsapp','row-email','row-web','row-address'];
+const rowIds = ['row-phone','row-whatsapp','row-email','row-web','row-address','row-address2','row-instagram','row-linkedin'];
 rowIds.forEach(id => {
   const row = document.getElementById(id);
   row.addEventListener('click', (e) => {
@@ -359,6 +397,8 @@ function syncLinks(){
   let web = document.getElementById('f-web').textContent.trim();
   const addr = document.getElementById('f-address').textContent.trim();
   const mapLink = document.getElementById('f-maplink').value.trim();
+  const addr2 = document.getElementById('f-address2').textContent.trim();
+  const mapLink2 = document.getElementById('f-maplink2').value.trim();
 
   document.getElementById('row-phone').href = 'tel:' + phone;
   document.getElementById('row-whatsapp').href = 'https://wa.me/' + wa;
@@ -371,12 +411,30 @@ function syncLinks(){
   } else {
     document.getElementById('row-address').href = 'https://maps.google.com/?q=' + encodeURIComponent(addr);
   }
+
+  if(mapLink2){
+    document.getElementById('row-address2').href = mapLink2.startsWith('http') ? mapLink2 : 'https://' + mapLink2;
+  } else {
+    document.getElementById('row-address2').href = 'https://maps.google.com/?q=' + encodeURIComponent(addr2);
+  }
+
+  const igLink = document.getElementById('f-iglink').value.trim();
+  document.getElementById('row-instagram').href = igLink ? (igLink.startsWith('http') ? igLink : 'https://' + igLink) : 'https://instagram.com';
+
+  const liLink = document.getElementById('f-lilink').value.trim();
+  document.getElementById('row-linkedin').href = liLink ? (liLink.startsWith('http') ? liLink : 'https://' + liLink) : 'https://linkedin.com';
 }
 fields.forEach(id => {
   document.getElementById(id).addEventListener('blur', syncLinks);
 });
 document.getElementById('f-maplink').addEventListener('input', syncLinks);
 document.getElementById('f-maplink').addEventListener('blur', syncLinks);
+document.getElementById('f-maplink2').addEventListener('input', syncLinks);
+document.getElementById('f-maplink2').addEventListener('blur', syncLinks);
+document.getElementById('f-iglink').addEventListener('input', syncLinks);
+document.getElementById('f-iglink').addEventListener('blur', syncLinks);
+document.getElementById('f-lilink').addEventListener('input', syncLinks);
+document.getElementById('f-lilink').addEventListener('blur', syncLinks);
 syncLinks();
 
 function buildVCard(){
@@ -483,6 +541,12 @@ document.getElementById('exportFile').addEventListener('click', (e) => {
   if(cloneExportRow) cloneExportRow.style.display = 'none';
   const cloneMapInput = clone.querySelector('#f-maplink');
   if(cloneMapInput) cloneMapInput.setAttribute('value', document.getElementById('f-maplink').value.trim());
+  const cloneMapInput2 = clone.querySelector('#f-maplink2');
+  if(cloneMapInput2) cloneMapInput2.setAttribute('value', document.getElementById('f-maplink2').value.trim());
+  const cloneIgInput = clone.querySelector('#f-iglink');
+  if(cloneIgInput) cloneIgInput.setAttribute('value', document.getElementById('f-iglink').value.trim());
+  const cloneLiInput = clone.querySelector('#f-lilink');
+  if(cloneLiInput) cloneLiInput.setAttribute('value', document.getElementById('f-lilink').value.trim());
   const cloneQrUrl = clone.querySelector('#qrUrl');
   if(cloneQrUrl) cloneQrUrl.setAttribute('value', document.getElementById('qrUrl').value.trim());
 
